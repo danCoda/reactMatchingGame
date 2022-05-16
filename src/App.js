@@ -1,5 +1,5 @@
 import "./App.css";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import SingleCard from "./components/SingleCard";
 
 const cardImages = [
@@ -30,8 +30,26 @@ function App() {
   // Handle a choice
   const handleChoice = (card) => {
     choiceOne ? setChoiceTwo(card) : setChoiceOne(card);
+    // Can't compare cards here, because card state might not have been changed yet.
   };
 
+  // Compare two selected cards
+  useEffect(() => {
+    if (choiceOne && choiceTwo) {
+      if (choiceOne.src === choiceTwo.src) {
+        console.log("Congrats, matched.");
+      }
+
+      resetTurn();
+    }
+  }, [choiceOne, choiceTwo])
+
+  // Reset choices and increase turn
+  const resetTurn = () => {
+    setChoiceOne(null);
+    setChoiceTwo(null);
+    setTurns(prevTurns => prevTurns + 1);
+  }
   return (
     <div className="App">
       <h1>Magic Match</h1>
