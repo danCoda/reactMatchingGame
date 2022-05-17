@@ -26,6 +26,8 @@ function App() {
 
     setCards(shuffledCards);
     setTurns(0);
+    setChoiceOne(null);
+    setChoiceTwo(null);
   };
 
   // Handle a choice
@@ -33,6 +35,11 @@ function App() {
     choiceOne ? setChoiceTwo(card) : setChoiceOne(card);
     // Can't compare cards here, because card state might not have been changed yet.
   };
+
+  // On game start
+  useEffect(() => {
+    shuffleCard(); // Start the game.
+  }, []);
 
   // Compare two selected cards
   useEffect(() => {
@@ -50,12 +57,10 @@ function App() {
             return card;
           });
         });
-        console.log(cards);
       }
-
       setTimeout(() => resetTurn(), 1000);
     }
-  }, [cards, choiceOne, choiceTwo]);
+  }, [choiceOne, choiceTwo, turns]);
 
   // Reset choices and increase turn
   const resetTurn = () => {
@@ -80,6 +85,8 @@ function App() {
           />
         ))}
       </div>
+
+      <p>Number of turns: {turns}</p>
     </div>
   );
 }
