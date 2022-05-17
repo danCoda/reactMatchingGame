@@ -3,12 +3,12 @@ import { useState, useEffect } from "react";
 import SingleCard from "./components/SingleCard";
 
 const cardImages = [
-  { src: "/img/helmet-1.png" },
-  { src: "/img/potion-1.png" },
-  { src: "/img/ring-1.png" },
-  { src: "/img/scroll-1.png" },
-  { src: "/img/shield-1.png" },
-  { src: "/img/sword-1.png" },
+  { src: "/img/helmet-1.png", matched: false },
+  { src: "/img/potion-1.png", matched: false },
+  { src: "/img/ring-1.png", matched: false },
+  { src: "/img/scroll-1.png", matched: false },
+  { src: "/img/shield-1.png", matched: false },
+  { src: "/img/sword-1.png", matched: false },
 ];
 
 function App() {
@@ -38,18 +38,28 @@ function App() {
     if (choiceOne && choiceTwo) {
       if (choiceOne.src === choiceTwo.src) {
         console.log("Congrats, matched.");
+        setCards((prevCards) => {
+          return prevCards.map((card) => {
+            if (card.src === choiceOne.src) { // choiceOne.src === choiceTwo.src.
+              card.matched = true;
+            }
+            return card;
+          });
+        });
+
+        console.log(cards);
       }
 
       resetTurn();
     }
-  }, [choiceOne, choiceTwo])
+  }, [choiceOne, choiceTwo]);
 
   // Reset choices and increase turn
   const resetTurn = () => {
     setChoiceOne(null);
     setChoiceTwo(null);
-    setTurns(prevTurns => prevTurns + 1);
-  }
+    setTurns((prevTurns) => prevTurns + 1);
+  };
   return (
     <div className="App">
       <h1>Magic Match</h1>
